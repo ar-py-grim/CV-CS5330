@@ -4,8 +4,8 @@ Arpit Gandhi
 
 This file impelements a video display program that captures video from the camera
 and applies various filters to the video stream in real-time. The user can switch
-between different filter modes using keyboard inputs and save it to a file(.avi) 
-when pressed 'r' key.
+between different filter modes using keyboard inputs and save it to as video(.avi) 
+when pressed 'r' key. User can also save cuurrent frame as image by pressing 's' key.
 
 */ 
 
@@ -36,6 +36,11 @@ enum DisplayMode
 	face_highlight
 };
 
+// names of filter modes
+const string MODE_NAMES[] ={"color", "gray", "alt_gray", "sepia", "cblur",
+    "xsobel", "ysobel", "color_grad", "blur_quant", "detect_faces", "emboss", 
+    "fog_effect", "face_blur", "face_highlight"};
+
 // assigning keys to filter modes
 DisplayMode getDisplayMode(char key)
 {
@@ -44,7 +49,7 @@ DisplayMode getDisplayMode(char key)
     case 'c': return color;
     case 'g': return gray;
     case 'h': return alt_gray;
-    case 's': return sepia;
+    case 'p': return sepia;
     case 'b': return cblur;
     case 'x': return xsobel;
     case 'y': return ysobel;
@@ -92,6 +97,7 @@ int main(int argc, char* argv[])
     int line_type = LINE_AA;
 
     namedWindow("Video");
+	const String OUTPUT_DIR = "images/";
 
     // make a DANetwork object
     DA2Network depthNet("model_fp16.onnx");
@@ -110,12 +116,19 @@ int main(int argc, char* argv[])
 
         char key = waitKey(10);
 
+        if (key == 's')
+        {
+            // save current frame as image
+            imwrite(OUTPUT_DIR + MODE_NAMES[mode] + ".png", opframe);
+			cout << "Frame saved\n";
+		}
+
         if (key == 'r')
         {
             if (!isRecording)
             {
                 // start recording
-                output.open("images/output" + to_string(rcnt) + ".avi",
+                output.open(OUTPUT_DIR + "output" + to_string(rcnt) + ".avi",
                      VideoWriter::fourcc('M', 'J', 'P', 'G'), fps, Size(frame_width, frame_height), true);
                 if (!output.isOpened())
                 {
@@ -140,7 +153,7 @@ int main(int argc, char* argv[])
             break;
         }
         // valid key is pressed except q
-        else if (key!= -1 && key!= 'q' && key!= 'r')
+        else if (key!= -1 && key!= 'q' && key!= 'r' && key!= 's')
         {
             DisplayMode newMode = getDisplayMode(key);
             // toggle to color mode
