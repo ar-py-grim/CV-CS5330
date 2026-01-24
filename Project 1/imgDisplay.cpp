@@ -15,7 +15,7 @@ using namespace std;
 int main(int argc, char* argv[])
 {
     // load image
-    Mat image = imread("C:/Users/ASUS/Desktop/CS5330/Project 1/images/scenery.jpg");
+    Mat image = imread("images/scenery.jpg");;
 	// some image properties
     cout << "No.of channels = " << image.channels() << endl;
     cout << "No. of rows= " << image.rows <<" No. of clms= " << image.cols << endl;
