@@ -45,13 +45,14 @@ enum DisplayMode
     emboss,
     fog_effect,
     face_blur,
-	face_highlight
+	face_highlight,
+    canny_edge
 };
 
 // names of filter modes
 const string MODE_NAMES[] ={"color", "gray", "alt_gray", "sepia", "cblur1", "cblur2",
     "xsobel", "ysobel", "color_grad", "blur_quant", "detect_faces", "emboss", 
-    "fog_effect", "face_blur", "face_highlight"};
+    "fog_effect", "face_blur", "face_highlight", "canny_edge"};
 
 // number of times to run a filter for timing
 const int Ntimes = 10;
@@ -76,6 +77,7 @@ DisplayMode getDisplayMode(char key)
     case 'z': return fog_effect;
     case 'k': return face_blur;
     case 'i': return face_highlight;
+    case 'n': return canny_edge;
     default: return color;
     }
 }
@@ -168,7 +170,7 @@ int main(int argc, char* argv[])
         {
             break;
         }
-        // valid key is pressed except q
+        // valid key is pressed except q,r,s
         else if (key!= -1 && key!= 'q' && key!= 'r' && key!= 's')
         {
             DisplayMode newMode = getDisplayMode(key);
@@ -214,7 +216,7 @@ int main(int argc, char* argv[])
             double endTime = getTime();
             // compute the time per image
             double difference = (endTime - startTime) / Ntimes;
-            cout<<"Time per frame(1): "<<fixed<<setprecision(4)<<difference<<"s\n"<< endl;
+            cout << "Time per frame(1): "<<fixed<<setprecision(4)<<difference<<"s\n"<< endl;
         }
         break;
 
@@ -230,7 +232,7 @@ int main(int argc, char* argv[])
             double endTime = getTime();
             // compute the time per image
             double difference = (endTime - startTime) / Ntimes;
-            cout<<"Time per frame(2): "<<fixed<<setprecision(4)<<difference<<"s\n"<< endl;
+            cout << "Time per frame(2): "<<fixed<<setprecision(4)<<difference<<"s\n"<< endl;
         }
             break;
 
@@ -278,7 +280,7 @@ int main(int argc, char* argv[])
             vector<Rect> faces;
             detectFaces(gray_frame, faces);
             frame.copyTo(opframe);
-            faceBlur(opframe, faces);
+            faceBlur(opframe, faces, 13, 1.0, 2.5, 2.5);
         }
         break;
 
@@ -291,6 +293,10 @@ int main(int argc, char* argv[])
             faceHiglight(opframe, faces);
         }
         break;
+
+        case canny_edge:
+            cannyEdge(frame, opframe, 100);
+            break;
 
         default:
             opframe = frame.clone();
