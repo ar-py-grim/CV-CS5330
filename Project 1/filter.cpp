@@ -134,7 +134,7 @@ int blur5x5_2(Mat &src, Mat &dst)
 		for (int j=2; j<c-2; j++)
 		{
 			int bsum=0, gsum=0, rsum=0;
-			// apply 1×5 horizontal kernel
+			// apply 1Ã—5 horizontal kernel
 			for (int kj=-2; kj<=2; kj++)
 			{
 				int weight = kernel[kj+2];
@@ -153,7 +153,7 @@ int blur5x5_2(Mat &src, Mat &dst)
 		for (int j=0; j<c; j++)
 		{
 			int bsum=0, gsum=0, rsum=0;
-			// apply 5×1 vertical kernel
+			// apply 5Ã—1 vertical kernel
 			for (int ki=-2; ki<=2; ki++)
 			{
 				int weight = kernel[ki+2];
@@ -400,34 +400,30 @@ int fogEffect(Mat &src, Mat &dst, DA2Network &depthNet, int fog_intensity, float
 int faceHiglight(Mat &frame, vector<Rect> &faces, float scale)
 // highlight detected faces while rest of frame is grayscale
 {
+	Mat grey;
+	// grey scale entire frame
+	color_to_gray(frame, grey);
+	for (int i=0; i<faces.size(); i++)
 	{
-		Mat grey;
-		// grey scale entire frame
-		color_to_gray(frame, grey);
-		for (int i=0; i<faces.size(); i++)
+		Rect face = faces[i];
+		if (scale!= 1.0)
 		{
-			Rect face = faces[i];
-			if (scale!= 1.0)
-			{
-				face.x = (int)(face.x*scale);
-				face.y = (int)(face.y*scale);
-				face.width = (int)(face.width*scale);
-				face.height = (int)(face.height*scale);
-			}
-			face.x = max(0, face.x);
-			face.y = max(0, face.y);
-			face.width = min(frame.cols-face.x, face.width);
-			face.height = min(frame.rows-face.y, face.height);
-			// copy face region to grey frame
-			if (face.width>0 && face.height>0)
-			{
-				frame(face).copyTo(grey(face));
-			}
+			face.x = (int)(face.x*scale);
+			face.y = (int)(face.y*scale);
+			face.width = (int)(face.width*scale);
+			face.height = (int)(face.height*scale);
 		}
-		grey.copyTo(frame);
-		return 0;
+		face.x = max(0, face.x);
+		face.y = max(0, face.y);
+		face.width = min(frame.cols-face.x, face.width);
+		face.height = min(frame.rows-face.y, face.height);
+		// copy face region to grey frame
+		if (face.width>0 && face.height>0)
+		{
+			frame(face).copyTo(grey(face));
+		}
 	}
-
+	grey.copyTo(frame);
 	return 0;
 }
 
@@ -465,4 +461,5 @@ int cannyEdge(Mat &src, Mat &dst, int threshold)
 	}
 
 	return 0;
+
 }
