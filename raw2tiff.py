@@ -35,7 +35,7 @@ def processRAW(path, scale_factor=SCALE_FACTOR, auto_bright_off = AUTO_BRIGHT_OF
 
 def main():
 
-    filename = "images/HW_hist.dng"
+    filename = "images/HW_img.dng"
     suffix = filename.split(".")[-1].lower()
     if suffix!= 'dng' and suffix!= 'cr2':
         print("Input image %s is not a supported raw image file")
