@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
         cout << "Image File Not Found" << endl;
         return -1;
     }
-    cv::imshow("Original", image);
+    imshow("Original", image);
 
     while (true)
     {
