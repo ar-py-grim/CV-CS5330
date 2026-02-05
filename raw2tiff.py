@@ -25,7 +25,7 @@ def processRAW(path, scale_factor=SCALE_FACTOR, auto_bright_off = AUTO_BRIGHT_OF
         resized_rgb = rgb
 
         # optionally reduce the size
-        if scale_factor != 1:
+        if scale_factor!= 1:
             dim = ( rgb.shape[1] // scale_factor, rgb.shape[0] // scale_factor )
             resized_rgb = cv2.resize( rgb, dim, interpolation = cv2.INTER_AREA )
 
