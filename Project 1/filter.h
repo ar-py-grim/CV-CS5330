@@ -22,10 +22,11 @@ int blur5x5_2(Mat &src, Mat &dst);
 int sobelX3x3(Mat &src, Mat &dst);
 int sobelY3x3(Mat &src, Mat &dst);
 int magnitude(Mat &sx, Mat &sy, Mat &dst);
-int blurQuantize(Mat &src, Mat &dst, int levels);
+int blurQuantize(Mat &src, Mat &dst, int levels=10);
 int embossing(Mat &src, Mat &dst);
-int faceBlur(Mat &frame, vector<Rect> &faces, int ksize=11, float scale=1.0);
+int faceBlur(Mat &frame, vector<Rect> &faces, int ksize=11, float scale=1.0, double sigx=1.0, double sigy=1.0);
 int fogEffect(Mat &src, Mat &dst, DA2Network &depthNet, int fog_intensity=200, float density=2.0);
 int faceHiglight(Mat &frame, vector<Rect> &faces, float scale = 1.0);
+int cannyEdge(Mat &src, Mat &dst, int threshold=100);
 
 #endif

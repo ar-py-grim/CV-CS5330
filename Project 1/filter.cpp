@@ -134,7 +134,7 @@ int blur5x5_2(Mat &src, Mat &dst)
 		for (int j=2; j<c-2; j++)
 		{
 			int bsum=0, gsum=0, rsum=0;
-			// apply 1×5 horizontal kernel
+			// apply 1Ã—5 horizontal kernel
 			for (int kj=-2; kj<=2; kj++)
 			{
 				int weight = kernel[kj+2];
@@ -153,7 +153,7 @@ int blur5x5_2(Mat &src, Mat &dst)
 		for (int j=0; j<c; j++)
 		{
 			int bsum=0, gsum=0, rsum=0;
-			// apply 5×1 vertical kernel
+			// apply 5Ã—1 vertical kernel
 			for (int ki=-2; ki<=2; ki++)
 			{
 				int weight = kernel[ki+2];
@@ -232,7 +232,7 @@ int sobelY3x3(Mat &src, Mat &dst)
 				for (int kj=-1; kj<=1; kj++)
 				{
 					long long weight = (long long)kptr[kj+1];
-					//bsum+= src.at<Vec3b>(i+ki,j+kj)[0] * weight;
+					//bsum+= src.at<Vec3b>(i+ki,j+kj)[0]*weight;
 					bsum+= sptr[j+kj][0]*weight;
 					gsum+= sptr[j+kj][1]*weight;
 					rsum+= sptr[j+kj][2]*weight;
@@ -331,12 +331,12 @@ int embossing(Mat &src, Mat &dst)
 	return 0;
 }
 
-int faceBlur(Mat &frame, vector<Rect> &faces, int ksize, float scale)
+int faceBlur(Mat &frame, vector<Rect> &faces, int ksize, float scale, double sigx, double sigy)
 // blur frame aroud detected faces
 {
 	Mat blurred;
 	// blur entire frame
-	GaussianBlur(frame, blurred, Size(ksize,ksize), 0);
+	GaussianBlur(frame, blurred, Size(ksize,ksize), sigx, sigy);
 	for (int i=0; i<faces.size(); i++)
 	{
 		Rect face = faces[i];
@@ -400,33 +400,66 @@ int fogEffect(Mat &src, Mat &dst, DA2Network &depthNet, int fog_intensity, float
 int faceHiglight(Mat &frame, vector<Rect> &faces, float scale)
 // highlight detected faces while rest of frame is grayscale
 {
+	Mat grey;
+	// grey scale entire frame
+	color_to_gray(frame, grey);
+	for (int i=0; i<faces.size(); i++)
 	{
-		Mat grey;
-		// grey scale entire frame
-		color_to_gray(frame, grey);
-		for (int i=0; i<faces.size(); i++)
+		Rect face = faces[i];
+		if (scale!= 1.0)
 		{
-			Rect face = faces[i];
-			if (scale!= 1.0)
-			{
-				face.x = (int)(face.x*scale);
-				face.y = (int)(face.y*scale);
-				face.width = (int)(face.width*scale);
-				face.height = (int)(face.height*scale);
-			}
-			face.x = max(0, face.x);
-			face.y = max(0, face.y);
-			face.width = min(frame.cols-face.x, face.width);
-			face.height = min(frame.rows-face.y, face.height);
-			// copy face region to grey frame
-			if (face.width>0 && face.height>0)
-			{
-				frame(face).copyTo(grey(face));
-			}
+			face.x = (int)(face.x*scale);
+			face.y = (int)(face.y*scale);
+			face.width = (int)(face.width*scale);
+			face.height = (int)(face.height*scale);
 		}
-		grey.copyTo(frame);
-		return 0;
+		face.x = max(0, face.x);
+		face.y = max(0, face.y);
+		face.width = min(frame.cols-face.x, face.width);
+		face.height = min(frame.rows-face.y, face.height);
+		// copy face region to grey frame
+		if (face.width>0 && face.height>0)
+		{
+			frame(face).copyTo(grey(face));
+		}
+	}
+	grey.copyTo(frame);
+	return 0;
+}
+
+int cannyEdge(Mat &src, Mat &dst, int threshold)
+// Canny edge detection
+{
+	Mat blurred, sx, sy;
+	GaussianBlur(src, blurred, Size(5,5), 0.0);
+
+	sobelX3x3(blurred, sx);
+	sobelY3x3(blurred, sy);
+
+	int r = sx.rows;
+	int c = sx.cols;
+	dst = Mat::zeros(r, c, CV_8UC3);
+
+	for (int i=1; i<r-1; i++)
+	{
+		Vec3s* sxptr = sx.ptr<Vec3s>(i);
+		Vec3s* syptr = sy.ptr<Vec3s>(i);
+		Vec3b* dptr = dst.ptr<Vec3b>(i);
+
+		for (int j=1; j<c-1; j++)
+		{
+			// Average across channels
+			float gx = (sxptr[j][0] + sxptr[j][1] + sxptr[j][2])/3.0f;
+			float gy = (syptr[j][0] + syptr[j][1] + syptr[j][2])/3.0f;
+
+			float mag = sqrt(gx*gx + gy*gy);
+
+			// thresholding
+			uchar val = (mag>threshold) ? 255 : 0;
+			dptr[j] = Vec3b(val, val, val);
+		}
 	}
 
 	return 0;
+
 }

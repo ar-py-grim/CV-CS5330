@@ -55,7 +55,7 @@ int main(int argc, char *argv[])  // main function, execution starts here
   ////////////////set up the timing for version 1/////////////////
   double startTime = getTime();
 
-  // execute the file on the original image a couple of times
+  // execute the file on the original image Ntimes
   for(int i=0; i<Ntimes; i++)
   {
     blur5x5_1(src, dst);
@@ -68,14 +68,14 @@ int main(int argc, char *argv[])  // main function, execution starts here
   double endTime = getTime();
 
   // compute the time per image
-  double difference = (endTime - startTime) / Ntimes;
+  double difference = (endTime-startTime)/Ntimes;
 
   // print the results
   printf("Time per image (1): %.4lf seconds\n", difference);
 
   /////////////////set up the timing for version 2/////////////////
   startTime = getTime();
-  // execute the file on the original image a couple of times
+  // execute the file on the original image Ntimes
   for(int i=0; i<Ntimes; i++)
   {
     blur5x5_2(src, dst);
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])  // main function, execution starts here
   endTime = getTime();
 
   // compute the time per image
-  difference = (endTime - startTime) / Ntimes;
+  difference = (endTime-startTime)/Ntimes;
 
   // print the results
   printf("Time per image (2): %.4lf seconds\n", difference);
