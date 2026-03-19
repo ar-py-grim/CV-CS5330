@@ -5,6 +5,7 @@ OpenCV codes in C++
 Software used
 1. OpenCV: 4.12.0
 2. ONNX Runtime: onnxruntime-win-x64-1.23.2
+3. https://github.com/opencv/opencv_contrib
 
 ### Project 1 (Video-special effects)
 Created several filters which can be applied in real time. Below is sepia filter with vignetting filter applied
@@ -17,3 +18,4 @@ Demo video link [https://youtu.be/jLHL6HFBPqU](https://youtu.be/jLHL6HFBPqU)
 
 ### Project 3 (Real-time 2-D Object Recognition)
 Demo video link [https://youtu.be/jLHL6HFBPqU](https://youtu.be/KbhMeHfoXFk)
+
