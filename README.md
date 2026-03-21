@@ -6,6 +6,9 @@ Software used
 1. OpenCV: 4.12.0
 2. ONNX Runtime: onnxruntime-win-x64-1.23.2
 3. https://github.com/opencv/opencv_contrib
+4. GLEW (2.3.1): https://glew.sourceforge.net/
+5. GLM (1.0.3): https://github.com/g-truc/glm/releases
+6. stb_image_write.h: https://github.com/nothings/stb/blob/master/stb_image_write.h
 
 ### Project 1 (Video-special effects)
 Created several filters which can be applied in real time. Below is sepia filter with vignetting filter applied
