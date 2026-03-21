@@ -17,8 +17,10 @@ Created several filters which can be applied in real time. Below is sepia filter
 <img width="640" height="480" alt="sepia" src="https://github.com/user-attachments/assets/58cf009e-c7d1-490a-b0c8-26c2d95b1359" />
 
 ### Project 2 (Content-based Image Retrieval)
-Demo video link [https://youtu.be/jLHL6HFBPqU](https://youtu.be/jLHL6HFBPqU)
+Demo video link: [https://youtu.be/jLHL6HFBPqU](https://youtu.be/jLHL6HFBPqU)
 
 ### Project 3 (Real-time 2-D Object Recognition)
-Demo video link [https://youtu.be/jLHL6HFBPqU](https://youtu.be/KbhMeHfoXFk)
+Demo video link: [https://youtu.be/jLHL6HFBPqU](https://youtu.be/KbhMeHfoXFk)
 
+### Project 4 (Calibration and Augmented Reality)
+Demo video link: https://www.youtube.com/watch?v=mx82tLaLIDc
