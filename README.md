@@ -22,5 +22,5 @@ Demo video link: [https://youtu.be/jLHL6HFBPqU](https://youtu.be/jLHL6HFBPqU)
 ### Project 3 (Real-time 2-D Object Recognition)
 Demo video link: [https://youtu.be/jLHL6HFBPqU](https://youtu.be/KbhMeHfoXFk)
 
-### Project 4 (Calibration and Augmented Reality)
+### Project 4 (Camera Calibration and Augmented Reality)
 Demo video link: https://www.youtube.com/watch?v=mx82tLaLIDc
